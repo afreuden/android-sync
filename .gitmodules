@@ -1,0 +1,9 @@
+[submodule "lib"]
+	path = lib
+	url = https://github.com/google/adb-sync.git
+[submodule "lib/itunesexport"]
+	path = lib/itunesexport
+	url = https://github.com/ericdaugherty/itunesexport-scala
+[submodule "lib/adb-sync"]
+	path = lib/adb-sync
+	url = https://github.com/google/adb-sync.git

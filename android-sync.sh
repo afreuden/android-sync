@@ -56,11 +56,12 @@ get_storage_path()
     device_music_path=/storage/${sd_name}/Music
 }
 
+#TODO - Determine how to sync music files that have added/updated lyrics
 synchronise_music()
 {
     # Synchronise music from iTunes library to device sd card
     echo "Synchronising music...."
-    adb-sync "${HOST_MUSIC_PATH}/" "${device_music_path}" ||
+    adb-sync --dry-run "${HOST_MUSIC_PATH}/" "${device_music_path}" ||
     {
         echo "ERROR: A problem occurred while transferring your music. Disengaging..."
         disconnect_device
@@ -83,7 +84,7 @@ synchronise_playlists()
     }
     echo
     echo "Synchronising playlists..."
-    adb-sync "${playlist}/" "${device_music_path}" ||
+    adb-sync --dry-run "${playlist}/" "${device_music_path}" ||
     {
         echo "A problem occurred while transferring your playlists. Disengaging..."
         disconnect_device
