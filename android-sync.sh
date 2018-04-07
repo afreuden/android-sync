@@ -60,7 +60,7 @@ synchronise_music()
 {
     # Synchronise music from iTunes library to device sd card
     echo "Synchronising music...."
-    adb-sync --dry-run "${HOST_MUSIC_PATH}/" "${device_music_path}" ||
+    adb-sync "${HOST_MUSIC_PATH}/" "${device_music_path}" ||
     {
         echo "ERROR: A problem occurred while transferring your music. Disengaging..."
         disconnect_device
@@ -83,7 +83,7 @@ synchronise_playlists()
     }
     echo
     echo "Synchronising playlists..."
-    adb-sync --dry-run "${playlist}/" "${device_music_path}" ||
+    adb-sync "${playlist}/" "${device_music_path}" ||
     {
         echo "A problem occurred while transferring your playlists. Disengaging..."
         disconnect_device
@@ -95,7 +95,7 @@ clean_up_files()
 {
     echo "Cleaning up..."
     rm -rf ${playlist}
-    # cmd=$(adb shell "cd storage/${sd_name}/Music/; find . -name '.DS_Store' -delete")
+    cmd=$(adb shell "cd storage/${sd_name}/Music/; find . -name '.DS_Store' -delete")
     echo "iTunes synchronisation complete!"
     echo
 }
