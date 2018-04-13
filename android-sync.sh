@@ -60,7 +60,7 @@ get_storage_path()
     # Try to get the UUID of the sd_card mounted in /storage and create a Music folder if it doesn't exists.
     # TODO Default to internal storage if an external storage device isn't present
 
-    sd_name=$(adb shell "cd storage/****-****; pwd | sed 's#.*/##'") ||
+    sd_name=$(adb shell "cd storage/****-****/; pwd | sed 's#.*/##'") ||
     {
         echo 'ERROR: There was a problem accessing the external storage device. Disengaging...'
         disconnect_device
