@@ -3,7 +3,7 @@
 __TITLE__="Android Sync"
 __DESCRIPTION__="iTunes music synchronisation utility for android devices"
 __AUTHOR__="Angus Freudenberg, 2018"
-__VERSION__="0.2.0b"
+__VERSION__="0.2.1-beta"
 
 echo "$__TITLE__ - $__VERSION__\n$__DESCRIPTION__\n$__AUTHOR__"
 echo
@@ -21,7 +21,8 @@ adb_check()
 {
     # Try to launch adb to confirm it is present on the system
 
-    cmd=$(adb help 2>&1) || {
+    cmd=$(adb help 2>&1) ||
+        {
         echo >&2 "ERROR: adb not functional, make sure it is in your PATH:"
         echo $PATH
         exit 1
@@ -75,7 +76,7 @@ get_storage_path()
 synchronise_music()
 {
     # Synchronise music from iTunes library to device sd card
-    #TODO - Determine how to sync music files that have added/updated lyrics
+    #TODO - Determine how to sync music files that have added/updated lyrics ?md5 checksum
 
     echo "Synchronising music...."
     adb-sync -f -d "${HOST_MUSIC_PATH}/" "${device_music_path}" ||
@@ -89,7 +90,7 @@ synchronise_music()
 synchronise_playlists()
 {
     # Synchronise playlists from iTunes library to device sd card
-    #TODO - Switch directory to playlist file on internal storage for better compatibility with music players
+    #TODO - Dynamic switching between internal and external storage for better compatibility with music players
 
     echo "Generating temporary directory..."
     playlist=$(mktemp -d)
@@ -102,7 +103,6 @@ synchronise_playlists()
     }
     echo
     echo "Synchronising playlists..."
-    # adb-sync --dry-run "${playlist}/" "${device_music_path}" ||
     cmd=$(adb shell "cd ${DEVICE_PLAYLIST_PATH}; mkdir -p Playlists")
     adb-sync -f -d "${playlist}/" "${DEVICE_PLAYLIST_PATH}/Playlists" ||
     {
