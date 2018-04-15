@@ -1,7 +1,8 @@
 #!/bin/sh
 
-SOURCE="$( cd "$(dirname "$0")" ; pwd -P )"
-PATH=$PATH:/bin:/usr/bin:/usr/local/bin
+BASE="$( cd "$(dirname "$0")" ; pwd -P )"
+LIB=${BASE}/lib
+PATH=$PATH:${BASE}:${LIB}
 export PATH
 
 # Default iTunes library location
@@ -86,7 +87,7 @@ synchronise_music()
     #TODO - Determine how to sync music files that have added/updated lyrics ?md5 checksum
 
     echo "Synchronising music....\nDo not unplug your device!"
-    adb-sync -f -d "${HOST_MUSIC_PATH}/" "${device_music_path}" ||
+    ${LIB}/adb-sync -f -d "${HOST_MUSIC_PATH}/" "${device_music_path}" ||
     {
         echo "ERROR: A problem occurred while transferring your music. Disengaging..."
         disconnect_device
@@ -102,7 +103,7 @@ synchronise_playlists()
     echo "Generating temporary directory..."
     playlist=$(mktemp -d) # Temporary folder
     echo "Extracting playlists to temporary directory..."
-    java -jar ${SOURCE}/itunesexport.jar "${HOST_MUSIC_PATH}" -outputDir="${playlist}/" -fileTypes=ALL ||
+    java -jar ${LIB}/itunesexport.jar "${HOST_MUSIC_PATH}" -outputDir="${playlist}/" -fileTypes=ALL ||
     {
         echo "ERROR: A problem occurred while exporting your playlists. Disengaging..."
         rm -rf ${playlist} # Delete temporary folder
@@ -110,7 +111,7 @@ synchronise_playlists()
     }
     echo
     echo "Synchronising playlists...\nDo not unplug your device!"
-    adb-sync -f -d "${playlist}/" "${device_playlist_path}" ||
+    ${LIB}/adb-sync -f -d "${playlist}/" "${device_playlist_path}" ||
     {
         echo "A problem occurred while transferring your playlists. Disengaging..."
         disconnect_device
